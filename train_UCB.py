@@ -141,6 +141,7 @@ for epoch_number in range(number_of_epochs):
 		sign_vector=np.sign(value_vector)
 		alpha_scale=sum(np.absolute(value_vector))/(n*n)
 		value_vector=alpha_scale*sign_vector
+		board_states_to_value_vectors[board_state]=value_vector
 		assert board_state[position_to_play]!='X'
 		board_state=board_state[:position_to_play]+'X'+board_state[position_to_play+1:]		
 	
@@ -167,9 +168,9 @@ for epoch_number in range(number_of_epochs):
 				win_count[position_to_play] +=1
 			# value_vector[position_to_play]=win_count[position_to_play]/play_count[position_to_play] + math.sqrt(1.5*math.log(epoch_number+1)/play_count[position_to_play])
 		
-		# else: # => the current moves was played by player 2.
-		# 	if(reward<0):
-		# 		win_count[position_to_play] +=1
+		else: # => the current moves was played by player 2.
+			if(reward<0):
+				win_count[position_to_play] +=1
 			# value_vector[position_to_play]=win_count[position_to_play]/play_count[position_to_play] + math.sqrt(1.5*math.log(epoch_number+1)/play_count[position_to_play])
 		board_states_to_win_count[board_state]=win_count
 		action_number += 1	
