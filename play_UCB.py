@@ -96,7 +96,7 @@ for epoch_number in range(number_of_epochs):
 		if(player_to_play==1):
 			# the function below finds the action vector of the present board state and creates one if it is not present
 			# print(board_state)
-			if(board_states_to_value_vectors.get(board_state)==None):
+			if(str(board_states_to_value_vectors.get(board_state))=="None"):
 				win_count=[0]*(n*n)
 				play_count=[0]*(n*n)
 				value_vector=[0]*(n*n)
@@ -111,7 +111,7 @@ for epoch_number in range(number_of_epochs):
 				board_states_to_win_count[board_state]=win_count
 				board_states_to_play_count[board_state]=play_count
 				board_states_to_value_vectors[board_state]=value_vector
-			elif(board_states_to_play_count.get(board_state)==None):
+			elif(str(board_states_to_play_count.get(board_state))=="None"):
 				play_count=[0]*(n*n)
 				win_count=[0]*(n*n)
 				board_states_to_win_count[board_state]=win_count
