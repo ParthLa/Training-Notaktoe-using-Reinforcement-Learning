@@ -137,10 +137,10 @@ for epoch_number in range(number_of_epochs):
 				if(value_vector[j]==maxm_value and board_state[j]=='.'):
 					list_max_indices.append(j)
 			position_to_play=random.choice(list_max_indices)
-			if(play_count[position_to_play]==0):
-				play_count[position_to_play]=1
-			else:
-				play_count[position_to_play] += 1
+			# if(play_count[position_to_play]==0):
+			# 	play_count[position_to_play]=1
+			# else:
+			# 	play_count[position_to_play] += 1
 			actions_taken.append((board_state,position_to_play))
 			# binarization of the action vectors using xnor net technique - 
 			# this doesn't seem to work on action vectors since everytime we approximate the action vector with binary vector, 
@@ -148,9 +148,9 @@ for epoch_number in range(number_of_epochs):
 			row_num=position_to_play//n+1
 			column_num=position_to_play%n+1
 			print("Computer's position to play: "+str(row_num)+" "+str(column_num))
-			sign_vector=np.sign(value_vector)
-			alpha_scale=sum(np.absolute(value_vector))/(n*n)
-			value_vector=alpha_scale*sign_vector
+			# sign_vector=np.sign(value_vector)
+			# alpha_scale=sum(np.absolute(value_vector))/(n*n)
+			# value_vector=alpha_scale*sign_vector
 			player_to_play=2
 		else:
 			valid_move=False
@@ -183,10 +183,10 @@ for epoch_number in range(number_of_epochs):
 		reward=-1*theta/num_moves
 	print()
 	# updating the actions_taken vector using decided reward(a kind of backpropagation)
-	for board_state, position_to_play in actions_taken:
-		win_count=board_states_to_win_count[board_state]
-		if(reward>0):
-			win_count[position_to_play] +=1
+	# for board_state, position_to_play in actions_taken:
+	# 	win_count=board_states_to_win_count[board_state]
+	# 	if(reward>0):
+	# 		win_count[position_to_play] +=1
 			# value_vector[position_to_play]=win_count[position_to_play]/play_count[position_to_play] + math.sqrt(1.5*math.log(epoch_number+1)/play_count[position_to_play])
 	
 	# the winning probabilities of both players based on the reward being given after every epoch

@@ -82,14 +82,16 @@ for epoch_number in range(number_of_epochs):
 	if(epoch_number%1000==0):
 		print("Number of games played: "+str(epoch_number))
 	board_state=empty_board_state
+	# print(board_states_to_value_vectors[board_state])
 	actions_taken=[]
 	while(find_if_terminal(board_state,verbose)==False):
 		# the function below finds the action vector of the present board state and creates one if it is not present
 		# print(board_state)
-		if(board_states_to_value_vectors.get(board_state)==None):
-			win_count=[0]*(n*n)
-			play_count=[0]*(n*n)
+		# print(board_states_to_value_vectors.get(board_state))
+		if(str(board_states_to_value_vectors.get(board_state))=="None"):
 			value_vector=[0]*(n*n)
+			play_count=[0]*(n*n)
+			win_count=[0]*(n*n)
 			length=len(board_state)
 			for j in range(length):
 				# working on initialization of action probability values
@@ -98,17 +100,17 @@ for epoch_number in range(number_of_epochs):
 				# the 2 lines below initialize the centre of board with higher value so that the first player tempts to play at the centre.
 				# if(j==length/2):
 				# 	value_vector[j]=2
-			board_states_to_win_count[board_state]=win_count
-			board_states_to_play_count[board_state]=play_count
 			board_states_to_value_vectors[board_state]=value_vector
-		elif(board_states_to_play_count.get(board_state)==None):
+			board_states_to_play_count[board_state]=play_count
+			board_states_to_win_count[board_state]=win_count
+		elif(str(board_states_to_play_count.get(board_state))=="None"):
 			play_count=[0]*(n*n)
 			win_count=[0]*(n*n)
-			board_states_to_win_count[board_state]=win_count
 			board_states_to_play_count[board_state]=play_count
+			board_states_to_win_count[board_state]=win_count
 		else:
-			play_count=board_states_to_play_count[board_state]
 			value_vector=board_states_to_value_vectors[board_state]
+			play_count=board_states_to_play_count[board_state]
 			length=len(board_state)
 			for j in range(length):
 				if(play_count[j]==0):
@@ -117,8 +119,9 @@ for epoch_number in range(number_of_epochs):
 					value_vector[j]=win_count[j]/play_count[j] + math.sqrt(1.5*math.log(epoch_number+1)/play_count[j])
 			board_states_to_value_vectors[board_state]=value_vector
 	
-		play_count=board_states_to_play_count[board_state]
 		value_vector=board_states_to_value_vectors[board_state]
+		play_count=board_states_to_play_count[board_state]
+		# print(value_vector)
 		maxm_value=0
 		# finding the best action to take - using UCB policy here. 
 		for j in range(n*n):
@@ -138,10 +141,11 @@ for epoch_number in range(number_of_epochs):
 		# binarization of the action vectors using xnor net technique - 
 		# this doesn't seem to work on action vectors since everytime we approximate the action vector with binary vector, 
 		# we will get same probability for all action values in that action vector. so we do it on value vectors 
-		sign_vector=np.sign(value_vector)
-		alpha_scale=sum(np.absolute(value_vector))/(n*n)
-		value_vector=alpha_scale*sign_vector
+		# sign_vector=np.sign(value_vector)
+		# alpha_scale=sum(np.absolute(value_vector))/(n*n)
+		# value_vector=alpha_scale*sign_vector
 		board_states_to_value_vectors[board_state]=value_vector
+		# print(value_vector)
 		assert board_state[position_to_play]!='X'
 		board_state=board_state[:position_to_play]+'X'+board_state[position_to_play+1:]		
 	
